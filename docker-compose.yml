@@ -1,0 +1,19 @@
+version: '3'
+services:
+  blockchain:
+    image: trufflesuite/ganache-cli:latest
+    hostname: blockchain
+    ports:
+      - "8545:8545"
+      - "30303:30303"
+    command: ganache-cli --accounts=1 --blocktime=1
+
+#  web:
+#    build:
+#      context: src/
+#      dockerfile: Dockerfile
+#    hostname: web
+#    depends_on:
+#      - blockchain
+#    links:
+#      - blockchain

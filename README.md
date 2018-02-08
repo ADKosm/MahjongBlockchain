@@ -1,2 +1,1 @@
-# MahjongBlockchain
-Mahjong on blockchain
+# BlockchainLife
