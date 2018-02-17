@@ -8,12 +8,14 @@ services:
       - "30303:30303"
     command: ganache-cli --accounts=1 --blocktime=1
 
-#  web:
-#    build:
-#      context: src/
-#      dockerfile: Dockerfile
-#    hostname: web
-#    depends_on:
-#      - blockchain
-#    links:
-#      - blockchain
+  web:
+    build:
+      context: src/
+      dockerfile: Dockerfile
+    hostname: web
+    ports:
+      - 8484:8484
+    depends_on:
+      - blockchain
+    links:
+      - blockchain
