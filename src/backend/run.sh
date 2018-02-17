@@ -1,0 +1,1 @@
+gunicorn -c server_conf.py application:app

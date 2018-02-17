@@ -19,5 +19,6 @@ RUN cd /app/backend/ && pip3 install -r requirements.txt
 RUN cd /app/frontend/ && pub get && pub build -o ../backend/assets
 
 WORKDIR /app/backend
+RUN chmod +x run.sh
 
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8484", "application:app"]
+CMD ["bash", "run.sh"]

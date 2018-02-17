@@ -13,6 +13,8 @@ services:
       context: src/
       dockerfile: Dockerfile
     hostname: web
+    environment:
+      - BLOCKCHAIN_URL=http://blockchain:8545
     ports:
       - 8484:8484
     depends_on:
