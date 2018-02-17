@@ -18,4 +18,6 @@ RUN apt-get update && apt-get install -y dart
 RUN cd /app/backend/ && pip3 install -r requirements.txt
 RUN cd /app/frontend/ && pub get && pub build -o ../backend/assets
 
-CMD ["python3", "backend/application.py"]
+WORKDIR /app/backend
+
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8484", "application:app"]
