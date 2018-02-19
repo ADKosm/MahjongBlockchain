@@ -1,27 +1,25 @@
 pragma solidity ^0.4.0;
 
-contract Greeter {
-    string public greeting;
-    string public index;
+contract Mahjong {
+    mapping (bytes32 => int) public timestamp;
+    mapping (bytes32 => string) public game_map;
 
-    function Greeter() {
-        greeting = 'Hello';
-        index = 'B-tree';
+    function injectStep(bytes32 id, string map, int time) public {
+        timestamp[id] = time;
+        game_map[id] = map;
     }
 
-    function setGreeting(string _greeting) public {
-        greeting = _greeting;
+    function commitStep(bytes32 id, string map) public {
+        int current_timestamp = timestamp[id];
+        timestamp[id] = current_timestamp + 1;
+        game_map[id] = map;
     }
 
-    function setIndex(string _index) public {
-        index = _index;
+    function getTimestamp(bytes32 id) constant returns (int) {
+        return timestamp[id];
     }
 
-    function greet() constant returns (string) {
-        return greeting;
-    }
-
-    function index() constant returns (string) {
-        return index;
+    function getGameMap(bytes32 id) constant returns (string) {
+        return game_map[id];
     }
 }
