@@ -1,6 +1,8 @@
+import json
 import time
 from typing import Optional
 
+import math
 from solc import compile_source
 from web3 import Web3, HTTPProvider
 from web3.contract import ConciseContract
@@ -14,6 +16,7 @@ class BlockchainGateway:
         self.eth_client = None
         self.gas = 4100000
         self.contract_instance = None
+        self.contract_address = None
         self.polling_period = 0.5  # in seconds
 
     @property
@@ -48,7 +51,6 @@ class BlockchainGateway:
             current_timestamp = self._read_timestamp(id, block)
             if current_timestamp == timestamp:
                 current_game_map = self._read_game_map(id, block)
-                import pdb; pdb.set_trace()
                 found_game_map = GameMap.load_from_parameters(current_game_map, current_timestamp)
                 return found_game_map
         return None
@@ -126,5 +128,24 @@ class BlockchainGateway:
     def _read_game_map(self, id: str, block) -> str:
         game_map_index = 1
         position = self._position(id, game_map_index)
-        result = Web3.toText(hexstr=self.w3.eth.getStorageAt(self.contract_address, position, block))
-        return result
+        raw_data = self.w3.eth.getStorageAt(self.contract_address, position, block)
+
+        if len(raw_data) == 66:  # size of one hex line -> all string in this line
+            data = Web3.toText(hexstr=raw_data)
+        else:
+            string_size = Web3.toInt(hexstr=raw_data)
+            string_position = Web3.toInt(hexstr=Web3.sha3(hexstr=Web3.toHex(position)))
+            line_size = 32
+
+            data = ''.join([
+                Web3.toText(self.w3.eth.getStorageAt(self.contract_address, string_position + i, block))
+                for i in range(0, math.ceil(string_size / line_size))
+            ])
+
+        result = data.replace('\x00', '').strip()
+
+        bad_symbols = {Web3.toText(hexstr=Web3.toHex(i)) for i in range(65)}
+        if result[-1] in bad_symbols:
+            result = result[:-1]
+
+        return result.strip()
