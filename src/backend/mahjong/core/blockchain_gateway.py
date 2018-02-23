@@ -49,7 +49,7 @@ class BlockchainGateway:
         startBlock = self.w3.eth.blockNumber
         for block in range(startBlock, -1, -1):
             current_timestamp = self._read_timestamp(id, block)
-            if current_timestamp == timestamp:
+            if current_timestamp <= timestamp:
                 current_game_map = self._read_game_map(id, block)
                 found_game_map = GameMap.load_from_parameters(current_game_map, current_timestamp)
                 return found_game_map

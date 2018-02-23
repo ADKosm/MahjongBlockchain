@@ -71,15 +71,26 @@ class GameController {
     await gateway.step(gameMap);
     render_field();
     render_time_machine();
+    print(gameMap.timestamp);
   }
 
-  void commit_step() {
-    print("Comitment");
+  void commit_step() {  // FIXME: make async (or not)
+    print("Commitment");
     gateway.sync_step(gameMap);
   }
 
-  void back_to(int timestamp) {
-    print("Back to ${timestamp} timestamp");
+  Future<Null> back_to(int delta) async {
+    print(delta);
+    int timestamp = gameMap.timestamp - delta;
+    print(timestamp);
+    await gateway.back_to(timestamp);
+    var map = await gateway.get_current();
+
+    print("Get current map");
+
+    clear_field();
+    gameMap.build_from_json(map);
+    render_field();
   }
 
   Future<Null> _load_tiles() async {
@@ -115,6 +126,13 @@ class GameController {
     resourceManager.addBitmapData("winter", "images/fulltiles/winter.png");
 
     await resourceManager.load();
+  }
+
+  void clear_field() {
+    for(Tile t in gameMap.field) {
+      print("Remove child");
+      stage.removeChild(t.sprite);
+    }
   }
 
   void render_field() {

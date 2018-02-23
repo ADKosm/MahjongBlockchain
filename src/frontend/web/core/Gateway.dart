@@ -36,12 +36,14 @@ class Gateway {
     HttpRequest.postFormData("/api/step", postData).then((HttpRequest s) {
       print("Commit step");
     });
+    map.timestamp++;
   }
 
   Future<Null> back_to(int timestamp) async {
+    print("Hello, this is ${timestamp}");
     var postData = {
       'game_id': sessionId,
-      'step_timestamp': timestamp
+      'step_timestamp': timestamp.toString()
     };
 
     await HttpRequest.postFormData("/api/back_to", postData);

@@ -39,7 +39,7 @@ class GameMap {
       field.add(new Tile(first[0], first[1], first[2], tilesToSet[0], this));
       tilesToSet.removeAt(0);
     }
-    timestamp = 1;
+    timestamp = 0;
   }
 
   void reset_cursor() {
@@ -80,7 +80,8 @@ class GameMap {
   void build_from_json(dynamic data) {
     timestamp = data['timestamp'];
     field = new List();
-    for(dynamic d in data['game_map']) {
+    var map = JSON.decode(data['game_map']);
+    for(dynamic d in map) {
       field.add(new Tile(d[0], d[1], d[2], d[3], this));
     }
   }
