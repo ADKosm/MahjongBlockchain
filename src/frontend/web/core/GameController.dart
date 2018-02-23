@@ -212,13 +212,17 @@ class GameController {
   }
 
   void render_cursor(Tile tile) {
-    tile.sprite.x = tile.x * x_size + padding_x + (tile.z + 1) * 9;
-    tile.sprite.y = tile.y * y_size + padding_y - (tile.z + 1) * 9;
+    var tween = new Tween(tile.sprite, 0.15, Transition.linear);
+    tween.animate.x.to(tile.x * x_size + padding_x + (tile.z + 1) * 9);
+    tween.animate.y.to(tile.y * y_size + padding_y - (tile.z + 1) * 9);
+    stage.juggler.add(tween);
   }
 
   void unrender_cursor(Tile tile) {
-    tile.sprite.x = tile.x * x_size + padding_x + tile.z * 9;
-    tile.sprite.y = tile.y * y_size + padding_y - tile.z * 9;
+    var tween = new Tween(tile.sprite, 0.15, Transition.linear);
+    tween.animate.x.to(tile.x * x_size + padding_x + tile.z * 9);
+    tween.animate.y.to(tile.y * y_size + padding_y - tile.z * 9);
+    stage.juggler.add(tween);
   }
 
   void remove_tile(Tile tile) {

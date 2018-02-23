@@ -16,12 +16,6 @@ class GameOrchestrator:
             'cube': 'mahjong/game_maps/cube.json'
         }.get(map_type)
 
-    def say_hello(self):
-        # g = self.gateway._run_volatile_contract_method('setTimestamp')
-        # print(g, flush=True)
-        # return str(type(g))
-        return 1
-
     def create_game(self, map_path) -> str:
         new_game_id = str(uuid.uuid4())
         initial_map = GameMap.load_from_file(map_path)

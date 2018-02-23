@@ -1,7 +1,6 @@
-import 'dart:math';
-
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
+import 'dart:math';
 
 import 'GameController.dart';
 import 'Tile.dart';
@@ -86,6 +85,7 @@ class GameMap {
     timestamp = data['timestamp'];
     field = new List();
     var map = JSON.decode(data['game_map']);
+
     for(dynamic d in map) {
       field.add(new Tile(d[0], d[1], d[2], d[3], this));
     }

@@ -52,12 +52,6 @@ def get_current(game_orchestrator):
     })
 
 
-@app.route('/api/sleep')
-@inject.params(game_orchestrator=GameOrchestrator)
-def api_sleep(game_orchestrator):
-    return game_orchestrator.say_hello()
-
-
 @app.route('/')
 def index_alias():
     return send_from_directory('assets/web', 'index.html')
