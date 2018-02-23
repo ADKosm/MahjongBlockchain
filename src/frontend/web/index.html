@@ -17,7 +17,7 @@
 <body>
 
     <canvas id="stage" class="stage--fullscreen"></canvas>
-    <div id="timeMachine" class="input-group" style="visibility: hidden; width: 275px; height: 40px;">
+    <div id="timeMachine" class="input-group" style="visibility: hidden; width: 275px; height: 40px; font-family: 'Indie Flower'">
           <div class="input-group-prepend">
             <span class="input-group-text">Go back a few steps</span>
           </div>
@@ -25,6 +25,12 @@
           <div class="input-group-append">
             <button id="backButton" class="btn btn-outline-secondary" type="button">GO!</button>
           </div>
+    </div>
+    <div id="loadingPlash" style="visibility: hidden; font-family: 'Indie Flower'; text-align: center; line-height:30px;">
+        <h1>Loading <div class="loader" style="float:right;"></div></h1>
+    </div>
+    <div id="winPlash" style="visibility: hidden; font-family: 'Indie Flower'; text-align: center; line-height:30px;">
+        <h1>WIN!</h1>
     </div>
 
 </body>

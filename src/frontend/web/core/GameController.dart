@@ -27,6 +27,8 @@ class GameController {
   int timeWidth;
   int timeHeight;
 
+  HtmlObject loadPlash;
+
   Future<Null> boot_application() async {
     x_size = 55;
     y_size = 81;
@@ -45,6 +47,8 @@ class GameController {
     stage = new Stage(canvas, width: screen_x, height: screen_y, options: options);
     stage.scaleMode = StageScaleMode.SHOW_ALL;
     stage.align = StageAlign.NONE;
+
+    enable_loading_plash();
 
     resourceManager = new ResourceManager();
     await _load_tiles();
@@ -70,6 +74,9 @@ class GameController {
     gameMap.build_from_sceleton(gameSceleton);
 
     await gateway.step(gameMap);
+
+    disable_loading_plash();
+
     render_field();
     render_time_machine();
     print(gameMap.timestamp);
@@ -78,6 +85,7 @@ class GameController {
   void commit_step() {
     print("Commitment");
     gateway.sync_step(gameMap);
+    check_winning();
   }
 
   Future<Null> back_to(int delta) async {
@@ -90,6 +98,7 @@ class GameController {
     clear_field();
     gameMap.build_from_json(map);
     render_field();
+    restore_button();
   }
 
   Future<Null> _load_tiles() async {
@@ -157,6 +166,35 @@ class GameController {
     }
   }
 
+  void restore_button() {
+    var timeButton = html.querySelector("#backButton");
+    timeButton.innerHtml = 'GO!';
+  }
+
+  void enable_loading_plash() {
+    var htmlElement = html.querySelector("#loadingPlash");
+    loadPlash = new HtmlObject(htmlElement);
+    loadPlash.x = screen_x / 2 - 140 / 2;
+    loadPlash.y = screen_y / 2 - loadPlash.height / 2;
+
+    stage.addChild(loadPlash);
+  }
+
+  void disable_loading_plash() {
+    stage.removeChild(loadPlash);
+  }
+
+  void check_winning() {
+    if(gameMap.field.length == 0) {
+      var htmlElement = html.querySelector("#winPlash");
+      var winPlash = new HtmlObject(htmlElement);
+      winPlash.x = screen_x / 2 - 100 / 2;
+      winPlash.y = screen_y / 2;
+
+      stage.addChild(winPlash);
+    }
+  }
+
   void render_time_machine() {
     var htmlElement = html.querySelector("#timeMachine");
     var htmlObject = new HtmlObject(htmlElement);
@@ -167,6 +205,7 @@ class GameController {
     var timeButton = html.querySelector("#backButton");
     timeButton.addEventListener('click', (dynamic e) {
       back_to(int.parse(timeValue.value));
+      timeButton.innerHtml='<div class="loader"></div>';
     });
 
     stage.addChild(htmlObject);
