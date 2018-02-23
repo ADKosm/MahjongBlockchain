@@ -27,6 +27,17 @@ class Gateway {
     map.timestamp++;
   }
 
+  void sync_step(GameMap map) {
+    var postData = {
+      'game_id': sessionId,
+      'new_map': map.to_json()
+    };
+
+    HttpRequest.postFormData("/api/step", postData).then((HttpRequest s) {
+      print("Commit step");
+    });
+  }
+
   Future<Null> back_to(int timestamp) async {
     var postData = {
       'game_id': sessionId,

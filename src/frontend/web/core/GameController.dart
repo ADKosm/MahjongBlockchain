@@ -23,6 +23,8 @@ class GameController {
   int padding_x;
   int padding_y;
 
+  int timeWidth;
+  int timeHeight;
 
   Future<Null> boot_application() async {
     x_size = 55;
@@ -31,6 +33,8 @@ class GameController {
     screen_y = 800;
     padding_x = 64;
     padding_y = 60;
+    timeWidth = 275;
+    timeHeight = 40;
 
     StageOptions options = new StageOptions()
       ..backgroundColor = Color.LightGreen
@@ -66,9 +70,17 @@ class GameController {
 
     await gateway.step(gameMap);
     render_field();
+    render_time_machine();
   }
 
-  void back_to() {}
+  void commit_step() {
+    print("Comitment");
+    gateway.sync_step(gameMap);
+  }
+
+  void back_to(int timestamp) {
+    print("Back to ${timestamp} timestamp");
+  }
 
   Future<Null> _load_tiles() async {
     for(int i = 1; i < 10; i++) { // load bamboos
@@ -127,6 +139,21 @@ class GameController {
 
       stage.addChild(t.sprite);
     }
+  }
+
+  void render_time_machine() {
+    var htmlElement = html.querySelector("#timeMachine");
+    var htmlObject = new HtmlObject(htmlElement);
+    htmlObject.x = screen_x / 2 - timeWidth / 2;
+    htmlObject.y = screen_y - timeHeight - 20;
+
+    html.InputElement timeValue = html.querySelector("#backStepsValue");
+    var timeButton = html.querySelector("#backButton");
+    timeButton.addEventListener('click', (dynamic e) {
+      back_to(int.parse(timeValue.value));
+    });
+
+    stage.addChild(htmlObject);
   }
 
   void render_cursor(Tile tile) {

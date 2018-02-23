@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'dart:convert';
+import 'dart:async';
 
 import 'GameController.dart';
 import 'Tile.dart';
@@ -51,7 +52,7 @@ class GameMap {
     gameController.render_cursor(underCursor);
   }
 
-  void match_tile(Tile tile) {
+  Future<Null> match_tile(Tile tile) async {
     if(!_check_possibility(tile.x, tile.y, tile.z)) return;
 
     if(underCursor == null) {
@@ -67,6 +68,8 @@ class GameMap {
         gameController.remove_tile(underCursor);
 
         reset_cursor();
+
+        gameController.commit_step();
       } else {
         reset_cursor();
         set_cursor(tile);
