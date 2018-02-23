@@ -2,14 +2,20 @@ import 'dart:math';
 
 import 'dart:convert';
 
+import 'GameController.dart';
 import 'Tile.dart';
 
 class GameMap {
   List<Tile> field;
   int timestamp;
 
-  GameMap() {
+  GameController gameController;
+  Tile underCursor;
+
+  GameMap(GameController controller) {
     field = new List();
+    underCursor = null;
+    gameController = controller;
   }
 
   void build_from_sceleton(dynamic sceleton) {
@@ -29,17 +35,50 @@ class GameMap {
       }
       raw_map.remove(first);
 
-      field.add(new Tile(first[0], first[1], first[2], tilesToSet[0]));
+      field.add(new Tile(first[0], first[1], first[2], tilesToSet[0], this));
       tilesToSet.removeAt(0);
     }
     timestamp = 1;
+  }
+
+  void reset_cursor() {
+    gameController.unrender_cursor(underCursor);
+    underCursor = null;
+  }
+
+  void set_cursor(Tile newCursor) {
+    underCursor = newCursor;
+    gameController.render_cursor(underCursor);
+  }
+
+  void match_tile(Tile tile) {
+    if(!_check_possibility(tile.x, tile.y, tile.z)) return;
+
+    if(underCursor == null) {
+      set_cursor(tile);
+    } else if(underCursor == tile) {
+      reset_cursor();
+    } else {
+      if(underCursor.match_with(tile)) {
+        field.remove(tile);
+        field.remove(underCursor);
+
+        gameController.remove_tile(tile);
+        gameController.remove_tile(underCursor);
+
+        reset_cursor();
+      } else {
+        reset_cursor();
+        set_cursor(tile);
+      }
+    }
   }
 
   void build_from_json(dynamic data) {
     timestamp = data['timestamp'];
     field = new List();
     for(dynamic d in data['game_map']) {
-      field.add(new Tile(d[0], d[1], d[2], d[3]));
+      field.add(new Tile(d[0], d[1], d[2], d[3], this));
     }
   }
 

@@ -48,7 +48,13 @@ class GameController {
     renderLoop.addStage(stage);
 
     gateway = new Gateway();
-    gameMap = new GameMap();
+    gameMap = new GameMap(this);
+
+    var plate = new GlassPlate(screen_x, screen_y);
+    plate.onMouseClick.listen((MouseEvent e){
+      gameMap.reset_cursor();
+    });
+    stage.addChild(plate);
   }
 
   Future<Null> new_game() async {
@@ -115,7 +121,25 @@ class GameController {
       t.sprite.width = 64;
       t.sprite.height = 90;
 
+      t.sprite.onMouseClick.listen((MouseEvent e) {
+        gameMap.match_tile(t);
+      });
+
       stage.addChild(t.sprite);
     }
+  }
+
+  void render_cursor(Tile tile) {
+    tile.sprite.x = tile.x * x_size + padding_x + (tile.z + 1) * 9;
+    tile.sprite.y = tile.y * y_size + padding_y - (tile.z + 1) * 9;
+  }
+
+  void unrender_cursor(Tile tile) {
+    tile.sprite.x = tile.x * x_size + padding_x + tile.z * 9;
+    tile.sprite.y = tile.y * y_size + padding_y - tile.z * 9;
+  }
+
+  void remove_tile(Tile tile) {
+    stage.removeChild(tile.sprite);
   }
 }
