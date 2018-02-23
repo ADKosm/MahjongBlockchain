@@ -31,7 +31,7 @@ def api_step(game_orchestrator):
 @inject.params(game_orchestrator=GameOrchestrator)
 def api_back_to(game_orchestrator):
     game_id = request.args.get('game_id', request.form.get('game_id'))
-    step_timestamp = max(0, int(request.args.get('step_timestamp', request.form.get('step_timestamp'))))
+    step_timestamp = max(1, int(request.args.get('step_timestamp', request.form.get('step_timestamp'))))
     game_map = game_orchestrator.back_to(game_id, step_timestamp)
     packed_map, packed_timestamp = game_map.pack()
     return jsonify({
