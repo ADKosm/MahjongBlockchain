@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:core';
 import 'dart:html' as html;
 
 import 'package:stagexl/stagexl.dart';
@@ -31,7 +32,7 @@ class GameController {
     y_size = 81;
     screen_x = 1280;
     screen_y = 800;
-    padding_x = 64;
+    padding_x = (screen_x / 2 - (12 * x_size) / 2 - x_size / 2).ceil();
     padding_y = 60;
     timeWidth = 275;
     timeHeight = 40;
@@ -74,7 +75,7 @@ class GameController {
     print(gameMap.timestamp);
   }
 
-  void commit_step() {  // FIXME: make async (or not)
+  void commit_step() {
     print("Commitment");
     gateway.sync_step(gameMap);
   }
@@ -85,8 +86,6 @@ class GameController {
     print(timestamp);
     await gateway.back_to(timestamp);
     var map = await gateway.get_current();
-
-    print("Get current map");
 
     clear_field();
     gameMap.build_from_json(map);
@@ -130,7 +129,6 @@ class GameController {
 
   void clear_field() {
     for(Tile t in gameMap.field) {
-      print("Remove child");
       stage.removeChild(t.sprite);
     }
   }

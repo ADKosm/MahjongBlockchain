@@ -1,7 +1,7 @@
-import 'dart:html';
-import 'dart:convert';
 import 'dart:async';
-import 'dart:developer';
+import 'dart:convert';
+import 'dart:html';
+
 import 'GameMap.dart';
 
 class Gateway {

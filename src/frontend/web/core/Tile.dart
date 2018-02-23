@@ -16,6 +16,14 @@ class Tile {
   }
 
   bool match_with(Tile other) {
+    var flowers = ["chrysanthemum", "lotus", "orchid", "peony"];
+    var seasons = ["fall", "spring", "summer", "winter"];
+    if(flowers.contains(type)) {
+      return flowers.contains(other.type);
+    }
+    if(seasons.contains(type)) {
+      return seasons.contains(other.type);
+    }
     return (type == other.type);
   }
 }

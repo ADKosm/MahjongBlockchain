@@ -28,15 +28,20 @@ class GameMap {
 
     while(raw_map.length > 0) {
       dynamic first = raw_map[0];
-      print(first);
-      print(raw_map);
-
       while(!_check_possibility(first[0], first[1], first[2])) {
         first = raw_map[_random.nextInt(raw_map.length)];
       }
       raw_map.remove(first);
 
+      dynamic second = raw_map[0];
+      while(!_check_possibility(second[0], second[1], second[2])) {
+        second = raw_map[_random.nextInt(raw_map.length)];
+      }
+      raw_map.remove(second);
+
       field.add(new Tile(first[0], first[1], first[2], tilesToSet[0], this));
+      field.add(new Tile(second[0], second[1], second[2], tilesToSet[1], this));
+      tilesToSet.removeAt(0);
       tilesToSet.removeAt(0);
     }
     timestamp = 0;
