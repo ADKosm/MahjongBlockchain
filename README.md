@@ -1,6 +1,6 @@
 # MahjongBlockchain
 
-This is classic [mahjong solitaire game](https://en.wikipedia.org/wiki/Mahjong_solitaire) improved by superposwer of **blockchain**.
+This is classic [mahjong solitaire game](https://en.wikipedia.org/wiki/Mahjong_solitaire) improved by superpower of **blockchain**.
 
 All steps are writing into blockchain and if you make a mistake, you can back a few steps back in order to correct this mistake. This mechanism use information in previous blocks on blockchain to retrieve nessesary information about your previous steps.
 
