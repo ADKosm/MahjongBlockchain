@@ -21,4 +21,4 @@ docker-compose up --build
 
 # Or
 
-You can try deployed version [on this site](http://kosmose.me:8585). But this site are working on very small machine, so it can leads to slow running, infinite loading, etc.
+You can try deployed version on this site: [blockjong.kosmose.me](http://blockjong.kosmose.me/). But this site are working on very small machine, so it can leads to slow running, infinite loading, etc.
